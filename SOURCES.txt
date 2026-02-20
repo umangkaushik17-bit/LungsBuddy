@@ -1,0 +1,196 @@
+================================================================================
+  LungBuddy 3.2 — Formula Sources & References
+  Nonlinear Epidemiological Risk Stratification Engine
+================================================================================
+
+Based on: "LungBuddy 3.0: A Nonlinear Epidemiological Risk Stratification
+Engine Integrating Circadian Immunometabolism, Micro-Environmental Dosimetry,
+and Diagnostic Symptom Suppression Logic" (2025)
+
+Domain Weights: Bio(15) + Behavioral(25) + Environmental(35) + Sleep(10) + Disease(15) = 100
+
+
+================================================================================
+  SECTION 1: SLEEP & CIRCADIAN IMMUNOMETABOLISM
+  Used in: Domain 4 — Sleep Recovery (Max 10 Points)
+================================================================================
+
+[1] Association of Insufficient Sleep With Respiratory Infection Among
+    Adults in the United States
+    Source: PMC (National Institutes of Health)
+    URL: https://pmc.ncbi.nlm.nih.gov/articles/PMC4899278/
+    Used for: 4.2x infection susceptibility at <6h sleep; viral challenge data
+
+[2] Insomnia Spikes Risk of Respiratory Infections
+    Source: Respiratory Therapy
+    URL: https://respiratory-therapy.com/disorders-diseases/infectious-diseases/influenza/insomnia-spikes-risk-respiratory-infections/
+    Used for: Sleep deprivation and upper respiratory tract infection (URTI) link
+
+[3] Association between sleep duration and lung function among US adults
+    Source: PMC (National Institutes of Health)
+    URL: https://pmc.ncbi.nlm.nih.gov/articles/PMC11657967/
+    Used for: U-shaped sleep-lung curve; HR 1.35-1.70 at <=5h; OR 1.346 for
+    restrictive impairment at <=6h; OR 1.827 for long sleep (>=9h)
+
+[4] Poor Sleep Tied to Greater Risk of COPD Exacerbations
+    Source: Respiratory Therapy
+    URL: https://respiratory-therapy.com/disorders-diseases/chronic-pulmonary-disorders/copd/poor-sleep-risk-copd-exacerbations/
+    Used for: 25-95% exacerbation increase in COPD patients with poor sleep;
+    justifies the disease amplifier multiplier (x1.3)
+
+[5] The association between sleep duration, respiratory symptoms...
+    Source: PMC (National Institutes of Health)
+    URL: https://pmc.ncbi.nlm.nih.gov/articles/PMC10150117/
+    Used for: FEV1 decline coefficients (-0.010 to -0.018 mL/yr) in short
+    sleepers relative to normal sleepers
+
+[6] Sleep Duration as a Risk Factor for Cardiovascular Disease —
+    A Review of the Recent Literature
+    Source: PMC (National Institutes of Health)
+    URL: https://pmc.ncbi.nlm.nih.gov/articles/PMC2845795/
+    Used for: Long sleep as mortality/metabolic signal; restrictive lung disease
+    association
+
+
+================================================================================
+  SECTION 2: AIR POLLUTION & EXERCISE MICRO-ENVIRONMENTS
+  Used in: Domain 3 — Environmental Load (Max 35 Points)
+================================================================================
+
+[7] The AQI Dilemma: Is it Safe to Exercise?
+    Source: GU Energy Labs
+    URL: https://guenergy.com/blogs/blog/the-aqi-dilemma-is-it-safe-to-exercise
+    Used for: Breakeven threshold where pollution harm outweighs exercise benefit
+    (PM2.5 > 50-100 ug/m3, AQI ~135-170)
+
+[8] Is Practicing Indoor Physical Activity Safe? Consideration of
+    Exposure to PM2.5
+    Source: PMC / NIH
+    URL: https://pmc.ncbi.nlm.nih.gov/articles/PMC10903325/
+    Used for: Gym PM2.5 concentration ranges (17-95 ug/m3); indoor
+    resuspension model; justifies gym ventilation quality distinction
+
+[9] Importance of Air Quality in Gyms
+    Source: Atmo Tube
+    URL: https://atmotube.com/blog/air-quality-in-gyms
+    Used for: CO2 levels >2000 ppm in crowded gyms; VOC exposure from rubber
+    mats and cleaning agents; poor ventilation floor effect
+
+[10] Air Pollution and Endurance Exercise: A Systematic Review of the
+     Potential Effects on Cardiopulmonary Health
+     Source: MDPI (Life)
+     URL: https://www.mdpi.com/2075-1729/15/4/595
+     Used for: Minute ventilation (VE) multiplier — resting 6 L/min to >100
+     L/min during vigorous exercise (10-15x increase = 15x inhaled dose)
+
+[11] Air pollution, physical activity and health: A mapping review
+     of the evidence
+     Source: PMC (National Institutes of Health)
+     URL: https://pmc.ncbi.nlm.nih.gov/articles/PMC7816214/
+     Used for: Net impact model — exercise cardiovascular benefit vs pollution
+     dose tradeoff; supports the "activeNet" calculation
+
+[12] Locations of Adolescent Physical Activity in an Urban Environment...
+     Source: PMC (National Institutes of Health)
+     URL: https://pmc.ncbi.nlm.nih.gov/articles/PMC7780976/
+     Used for: Urban canyon effect — near-road pollutant concentrations 2-10x
+     higher than background; justifies the 1.3x AQI multiplier for roadside
+
+[13] Air pollution exposure modes, smoking and genetic risk with chronic...
+     Source: PMC (National Institutes of Health)
+     URL: https://pmc.ncbi.nlm.nih.gov/articles/PMC12800334/
+     Used for: Multiplicative synergy between smoking and air pollution
+     (oxidative stress depleting glutathione reserves)
+
+
+================================================================================
+  SECTION 3: CLINICAL SCORING & DIAGNOSTIC SYMPTOM SUPPRESSION LOGIC (DSSL)
+  Used in: Domain 5 — Disease & Symptoms (Max 15 Points)
+================================================================================
+
+[14] Risk Prediction Model Demonstrates Superior Performance vs.
+     NELSON Criteria for Identifying Individuals for Screening
+     Source: ILCN (International Lung Cancer Network)
+     URL: https://www.ilcn.org/risk-prediction-model-demonstrates-superior-performance-vs-nelson-criteria-for-identifying-individuals-for-screening/
+     Used for: General risk stratification methodology validation
+
+[15] Differential Assessment and Management of Asthma vs Chronic...
+     Source: PMC (National Institutes of Health)
+     URL: https://pmc.ncbi.nlm.nih.gov/articles/PMC2654706/
+     Used for: DSSL suppression matrix — mapping which symptoms are intrinsic
+     to which diagnoses (COPD suppresses dyspnea/cough; Asthma suppresses
+     wheeze/tightness; TB suppresses cough)
+
+[16] Asthma-COPD Overlap (ACO)
+     Source: ACAAI (American College of Allergy, Asthma & Immunology)
+     URL: https://acaai.org/asthma/types-of-asthma/asthma-copd-overlap/
+     Used for: Justification for NOT suppressing wheezing in COPD — new onset
+     wheezing may indicate Asthma-COPD Overlap Syndrome (ACOS)
+
+[17] Global Initiative for Obstructive Lung Disease (GOLD) Criteria for COPD
+     Source: MDCalc
+     URL: https://www.mdcalc.com/calc/3919/global-initiative-obstructive-lung-disease-gold-criteria-copd
+     Used for: COPD diagnostic baseline scoring; obesity paradox validation
+     in COPD patients (GOLD 2024 guidelines)
+
+
+================================================================================
+  SECTION 4: ADDITIONAL STANDARDS REFERENCED IN CODE (v3.2)
+  Used across multiple domains
+================================================================================
+
+[18] WHO Global Air Pollution Database
+     Source: World Health Organization
+     Used for: 4.2M deaths from ambient air pollution + 3.8M deaths from
+     household air pollution annually — justifies elevating Environmental
+     domain to 35 points (the highest weighted domain)
+
+[19] SPIROMICS (SubPopulations and InteRmediate Outcome Measures In COPD Study)
+     Source: Multi-center longitudinal cohort study
+     Used for: Validation of logarithmic pack-year curve for smoking risk;
+     behavioral domain scaling
+
+[20] CDC EVALI (E-cigarette or Vaping Product Use-Associated Lung Injury)
+     Surveillance Data
+     Source: Centers for Disease Control and Prevention (CDC)
+     Used for: Vaping risk coefficient (+4 points in behavioral domain)
+
+[21] UK Biobank
+     Source: UK Biobank prospective cohort study (~500,000 participants)
+     Used for: Age-related senescence curves; BMI U-shaped relationship
+     with respiratory outcomes; long sleep phenotype data
+
+[22] NHANES (National Health and Nutrition Examination Survey)
+     Source: CDC / National Center for Health Statistics
+     Used for: Sleep duration vs respiratory mortality hazard ratios;
+     restrictive impairment odds ratios; FEV1 decline data
+
+
+================================================================================
+  FORMULA OVERVIEW (v3.2)
+================================================================================
+
+  Final Score = 100 - min(totalDamage, 100)
+
+  totalDamage = Bio + Behavioral + Environmental + Sleep + Disease
+
+  Domain            Max Pts   Key Mechanics
+  ─────────────     ───────   ──────────────────────────────────────────
+  Biological          15      Age (0.19/yr after 40), BMI (U-shaped), Genetics
+  Behavioral          25      Smoking (log pack-years), Vaping, Dual Use (1.5x)
+  Environmental       35      Passive AQI dose, Net Exercise Impact, Indoor AQ
+  Sleep               10      Circadian penalty (U-shaped), Disease amplifier
+  Disease/Symptoms    15      DSSL suppression, Breath Hold, Acute infection
+
+  Score Ranges:
+    90-100  Optimal
+    75-89   Good
+    50-74   Moderate
+    25-49   High Risk
+    0-24    Critical
+
+
+================================================================================
+  Document generated for: LungBuddy 3.2
+  Date: February 2026
+================================================================================
