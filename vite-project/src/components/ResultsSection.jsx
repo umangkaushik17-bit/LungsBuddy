@@ -8,9 +8,10 @@ import {
     ShieldCheck, AlertTriangle, Activity, Wind, Bed,
     HeartPulse, RefreshCw, TrendingUp, TrendingDown, ArrowUp,
     Brain, Flame, Stethoscope, Moon, Zap, BarChart3,
-    Cigarette, Shield, Dumbbell, Check, Download, X, User
+    Cigarette, Shield, Dumbbell, Check, Download, X, User, Sparkles, Loader2
 } from 'lucide-react';
 import jsPDF from 'jspdf';
+import { getAIRecommendations } from '../gemini';
 
 /* ===== Animated Circular Gauge ===== */
 const ScoreGauge = ({ score, color }) => {
@@ -1055,11 +1056,31 @@ const NameModal = ({ isOpen, onClose, onSubmit }) => {
     );
 };
 
+/* ===== Category icon map for AI recommendations ===== */
+const categoryIconMap = {
+    'Status': ShieldCheck, 'Urgent': HeartPulse, 'Protection': Shield,
+    'Lifestyle': Dumbbell, 'Medical': Stethoscope, 'Environment': Wind,
+};
+
 /* ===== Main Results Section ===== */
 const ResultsSection = ({ score, category, breakdown, userParams, onRetake }) => {
     const sectionRef = useRef(null);
     const [showNameModal, setShowNameModal] = useState(false);
     const isInView = useInView(sectionRef, { once: true, margin: '-80px' });
+    const [aiRecs, setAiRecs] = useState(null);
+    const [aiLoading, setAiLoading] = useState(false);
+
+    // Fetch AI recommendations when score is available
+    useEffect(() => {
+        if (score === null || score === undefined || !breakdown) return;
+        let cancelled = false;
+        setAiLoading(true);
+        getAIRecommendations(score, breakdown, userParams)
+            .then(recs => { if (!cancelled && recs) setAiRecs(recs); })
+            .catch(() => { })
+            .finally(() => { if (!cancelled) setAiLoading(false); });
+        return () => { cancelled = true; };
+    }, [score, breakdown]);
 
     const getCategoryStyle = (label) => {
         switch (label) {
@@ -1144,7 +1165,7 @@ const ResultsSection = ({ score, category, breakdown, userParams, onRetake }) =>
                             </p>
                         </motion.div>
 
-                        {/* Recommendations Card */}
+                        {/* Recommendations Card — AI-Powered with static fallback */}
                         <motion.div
                             initial={{ opacity: 0, x: 30 }}
                             animate={isInView ? { opacity: 1, x: 0 } : {}}
@@ -1154,28 +1175,65 @@ const ResultsSection = ({ score, category, breakdown, userParams, onRetake }) =>
                             <h3 className="text-lg font-bold text-white mb-5 flex items-center gap-2">
                                 <ShieldCheck className="w-5 h-5 text-teal-400" />
                                 Recommendations
+                                {aiRecs && (
+                                    <span className="ml-auto flex items-center gap-1 text-[10px] text-purple-300 bg-purple-500/10 border border-purple-500/20 px-2 py-0.5 rounded-full">
+                                        <Sparkles className="w-3 h-3" /> AI-Powered
+                                    </span>
+                                )}
+                                {aiLoading && !aiRecs && (
+                                    <span className="ml-auto flex items-center gap-1 text-[10px] text-gray-400">
+                                        <Loader2 className="w-3 h-3 animate-spin" /> Generating...
+                                    </span>
+                                )}
                             </h3>
                             <div className="space-y-3">
-                                {getRecommendations(score, breakdown, userParams).map(({ icon: Icon, text, category: cat }, i) => {
-                                    const catClass = cat === 'Status' ? 'rec-status' : cat === 'Lifestyle' ? 'rec-lifestyle' : cat === 'Protection' ? 'rec-protection' : cat === 'Urgent' ? 'rec-urgent' : cat === 'Medical' ? 'rec-medical' : 'rec-environment';
-                                    return (
-                                        <motion.div
-                                            key={text}
-                                            initial={{ opacity: 0, x: 20 }}
-                                            animate={isInView ? { opacity: 1, x: 0 } : {}}
-                                            transition={{ duration: 0.4, delay: 0.5 + i * 0.1 }}
-                                            className="flex items-start gap-3 p-3 rounded-lg bg-white/[0.02] hover:bg-white/[0.05] hover:translate-x-1 transition-all duration-300 group"
-                                        >
-                                            <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5" style={{ background: 'linear-gradient(135deg, rgba(20,184,166,0.1), rgba(6,182,212,0.08))' }}>
-                                                <Icon className="w-4 h-4 text-teal-400" />
-                                            </div>
-                                            <div>
-                                                <p className="text-gray-300 text-sm">{text}</p>
-                                                <span className={`inline-block text-[10px] uppercase tracking-wider mt-1 px-2 py-0.5 rounded-full font-medium ${catClass}`}>{cat}</span>
-                                            </div>
-                                        </motion.div>
-                                    );
-                                })}
+                                {aiRecs ? (
+                                    /* AI recommendations */
+                                    aiRecs.map((rec, i) => {
+                                        const cat = rec.category || 'Status';
+                                        const Icon = categoryIconMap[cat] || ShieldCheck;
+                                        const catClass = cat === 'Status' ? 'rec-status' : cat === 'Lifestyle' ? 'rec-lifestyle' : cat === 'Protection' ? 'rec-protection' : cat === 'Urgent' ? 'rec-urgent' : cat === 'Medical' ? 'rec-medical' : 'rec-environment';
+                                        return (
+                                            <motion.div
+                                                key={i}
+                                                initial={{ opacity: 0, x: 20 }}
+                                                animate={{ opacity: 1, x: 0 }}
+                                                transition={{ duration: 0.4, delay: i * 0.08 }}
+                                                className="flex items-start gap-3 p-3 rounded-lg bg-white/[0.02] hover:bg-white/[0.05] hover:translate-x-1 transition-all duration-300 group"
+                                            >
+                                                <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5" style={{ background: 'linear-gradient(135deg, rgba(147,51,234,0.1), rgba(139,92,246,0.08))' }}>
+                                                    <Icon className="w-4 h-4 text-purple-400" />
+                                                </div>
+                                                <div>
+                                                    <p className="text-gray-300 text-sm">{rec.text}</p>
+                                                    <span className={`inline-block text-[10px] uppercase tracking-wider mt-1 px-2 py-0.5 rounded-full font-medium ${catClass}`}>{cat}</span>
+                                                </div>
+                                            </motion.div>
+                                        );
+                                    })
+                                ) : (
+                                    /* Static fallback (shown instantly while AI loads) */
+                                    getRecommendations(score, breakdown, userParams).map(({ icon: Icon, text, category: cat }, i) => {
+                                        const catClass = cat === 'Status' ? 'rec-status' : cat === 'Lifestyle' ? 'rec-lifestyle' : cat === 'Protection' ? 'rec-protection' : cat === 'Urgent' ? 'rec-urgent' : cat === 'Medical' ? 'rec-medical' : 'rec-environment';
+                                        return (
+                                            <motion.div
+                                                key={text}
+                                                initial={{ opacity: 0, x: 20 }}
+                                                animate={isInView ? { opacity: 1, x: 0 } : {}}
+                                                transition={{ duration: 0.4, delay: 0.5 + i * 0.1 }}
+                                                className="flex items-start gap-3 p-3 rounded-lg bg-white/[0.02] hover:bg-white/[0.05] hover:translate-x-1 transition-all duration-300 group"
+                                            >
+                                                <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5" style={{ background: 'linear-gradient(135deg, rgba(20,184,166,0.1), rgba(6,182,212,0.08))' }}>
+                                                    <Icon className="w-4 h-4 text-teal-400" />
+                                                </div>
+                                                <div>
+                                                    <p className="text-gray-300 text-sm">{text}</p>
+                                                    <span className={`inline-block text-[10px] uppercase tracking-wider mt-1 px-2 py-0.5 rounded-full font-medium ${catClass}`}>{cat}</span>
+                                                </div>
+                                            </motion.div>
+                                        );
+                                    })
+                                )}
                             </div>
                         </motion.div>
                     </div>

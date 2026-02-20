@@ -57,11 +57,11 @@ const Footer = () => {
                             Get In Touch
                         </h4>
                         <div className="flex flex-col gap-3">
-                            <a href="mailto:hello@lungbuddy.ai" className="flex items-center gap-2 text-gray-500 hover:text-cyan-400 transition-colors text-sm">
+                            <a href="mailto:umangkaushik491@gmail.com" className="flex items-center gap-2 text-gray-500 hover:text-cyan-400 transition-colors text-sm">
                                 <Mail className="w-4 h-4" />
-                                hello@lungbuddy.ai
+                                umangkaushik491@gmail.com
                             </a>
-                            <a href="#" className="flex items-center gap-2 text-gray-500 hover:text-cyan-400 transition-colors text-sm">
+                            <a href="https://github.com/umangkaushik17-bit/LungsBuddy" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-gray-500 hover:text-cyan-400 transition-colors text-sm">
                                 <Github className="w-4 h-4" />
                                 GitHub
                             </a>

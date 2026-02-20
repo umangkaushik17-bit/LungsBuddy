@@ -8,7 +8,7 @@ import {
     ShieldCheck, Activity, Heart, AlertCircle, Zap
 } from 'lucide-react';
 
-const API_KEY = "f5d09f5cd47cd2918cd30e660fff21d3";
+const API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY || "YOUR_API_KEY_HERE";
 
 /* ===== Custom Select Component ===== */
 const CustomSelect = ({ label, name, value, options, onChange, icon: Icon, hint, error, onSelectDone }) => {
@@ -228,7 +228,7 @@ const stepVariants = {
 };
 
 /* ===== Main Component ===== */
-const InputSection = ({ onCalculate }) => {
+const InputSection = ({ onCalculate, forceVisible = false }) => {
     const [step, setStep] = useState(1);
     const [direction, setDirection] = useState(1);
     const [location, setLocation] = useState("");
@@ -257,7 +257,8 @@ const InputSection = ({ onCalculate }) => {
 
     const sectionRef = useRef(null);
     const fieldRefs = useRef({});
-    const isInView = useInView(sectionRef, { once: true, margin: '-80px' });
+    const isInViewRaw = useInView(sectionRef, { once: true, margin: '-80px' });
+    const isInView = forceVisible || isInViewRaw;
 
     useEffect(() => {
         let interval;

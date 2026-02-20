@@ -1,10 +1,13 @@
 import { useState } from 'react'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import HeroSection from './components/HeroSection'
 import DamageSection from './components/DamageSection'
 import InputSection from './components/InputSection'
 import ResultsSection from './components/ResultsSection'
 import Footer from './components/Footer'
+import AuthProvider from './components/leaderboard/AuthProvider'
+import LeaderboardPage from './components/leaderboard/LeaderboardPage'
 import './index.css'
 
 // =====================================================================
@@ -42,7 +45,7 @@ function getRiskCategoryColor(label) {
  * Weighted Domain Model (Total 100 Points)
  * Bio: 15 | Behavior: 25 | Env: 35 | Sleep: 10 | Disease: 15
  */
-function calculateLungRisk(data) {
+export function calculateLungRisk(data) {
   // --- INPUT LAYER ---------------------------------------------------
   const gender = (data.sex || 'male').toLowerCase();
   const age = Math.min(Math.max(Number(data.age || 0), 10), 120);
@@ -350,14 +353,25 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen text-white" style={{ background: 'var(--bg-primary)' }}>
-      <Navbar />
-      <HeroSection />
-      <DamageSection />
-      <InputSection key={resetKey} onCalculate={handleCalculate} />
-      <ResultsSection score={score} category={category} breakdown={breakdown} userParams={userParams} onRetake={handleRetake} />
-      <Footer />
-    </div>
+    <BrowserRouter>
+      <AuthProvider>
+        <Routes>
+          <Route path="/" element={
+            <div className="min-h-screen text-white" style={{ background: 'var(--bg-primary)' }}>
+              <Navbar />
+              <HeroSection />
+              <DamageSection />
+              <InputSection key={resetKey} onCalculate={handleCalculate} />
+              <ResultsSection score={score} category={category} breakdown={breakdown} userParams={userParams} onRetake={handleRetake} />
+              <Footer />
+            </div>
+          } />
+          <Route path="/leaderboard" element={
+            <LeaderboardPage calculateRisk={calculateLungRisk} />
+          } />
+        </Routes>
+      </AuthProvider>
+    </BrowserRouter>
   )
 }
 

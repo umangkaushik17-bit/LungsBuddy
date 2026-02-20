@@ -1,9 +1,13 @@
 import { useState, useEffect } from 'react';
-import { Menu, X, HeartPulse } from 'lucide-react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { Menu, X, HeartPulse, Trophy } from 'lucide-react';
 
 const Navbar = () => {
     const [scrolled, setScrolled] = useState(false);
     const [mobileOpen, setMobileOpen] = useState(false);
+    const navigate = useNavigate();
+    const location = useLocation();
+    const isLeaderboard = location.pathname === '/leaderboard';
 
     useEffect(() => {
         const handleScroll = () => setScrolled(window.scrollY > 40);
@@ -20,8 +24,16 @@ const Navbar = () => {
 
     const scrollTo = (href) => {
         setMobileOpen(false);
-        const el = document.querySelector(href);
-        el?.scrollIntoView({ behavior: 'smooth' });
+        if (isLeaderboard) {
+            navigate('/');
+            setTimeout(() => {
+                const el = document.querySelector(href);
+                el?.scrollIntoView({ behavior: 'smooth' });
+            }, 300);
+        } else {
+            const el = document.querySelector(href);
+            el?.scrollIntoView({ behavior: 'smooth' });
+        }
     };
 
     return (
@@ -55,11 +67,21 @@ const Navbar = () => {
                         </button>
                     ))}
                     <button
-                        onClick={() => scrollTo('#input-section')}
-                        className="btn-glow px-5 py-2 text-sm cursor-pointer"
+                        onClick={() => navigate('/leaderboard')}
+                        className="flex items-center gap-1.5 text-sm text-yellow-400/80 hover:text-yellow-400 transition-colors duration-300 cursor-pointer relative group"
                     >
-                        Check Your Score
+                        <Trophy className="w-3.5 h-3.5" />
+                        Leaderboard
+                        <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-yellow-400 group-hover:w-full transition-all duration-300"></span>
                     </button>
+                    {!isLeaderboard && (
+                        <button
+                            onClick={() => scrollTo('#input-section')}
+                            className="btn-glow px-5 py-2 text-sm cursor-pointer"
+                        >
+                            Check Your Score
+                        </button>
+                    )}
                 </div>
 
                 {/* Mobile Toggle */}
@@ -85,11 +107,19 @@ const Navbar = () => {
                             </button>
                         ))}
                         <button
-                            onClick={() => scrollTo('#input-section')}
-                            className="btn-glow px-5 py-2.5 text-sm mt-2 cursor-pointer"
+                            onClick={() => { setMobileOpen(false); navigate('/leaderboard'); }}
+                            className="text-left text-yellow-400/80 hover:text-yellow-400 transition-colors py-2 cursor-pointer flex items-center gap-2"
                         >
-                            Check Your Score
+                            <Trophy className="w-4 h-4" /> Leaderboard
                         </button>
+                        {!isLeaderboard && (
+                            <button
+                                onClick={() => scrollTo('#input-section')}
+                                className="btn-glow px-5 py-2.5 text-sm mt-2 cursor-pointer"
+                            >
+                                Check Your Score
+                            </button>
+                        )}
                     </div>
                 </div>
             )}
