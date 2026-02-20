@@ -254,6 +254,7 @@ const InputSection = ({ onCalculate, forceVisible = false }) => {
     const [isTimerRunning, setIsTimerRunning] = useState(false);
     const [breathHoldMode, setBreathHoldMode] = useState('choice');
     const [missingFields, setMissingFields] = useState({});
+    const [submitReady, setSubmitReady] = useState(false);
 
     const sectionRef = useRef(null);
     const fieldRefs = useRef({});
@@ -450,6 +451,15 @@ const InputSection = ({ onCalculate, forceVisible = false }) => {
             if (firstFocusable) firstFocusable.focus();
         }, 400);
         return () => clearTimeout(timer);
+    }, [step]);
+
+    // 1-second cooldown before submit is allowed on step 5
+    useEffect(() => {
+        if (step === 5) {
+            setSubmitReady(false);
+            const t = setTimeout(() => setSubmitReady(true), 1000);
+            return () => clearTimeout(t);
+        }
     }, [step]);
 
     // Debounced city autocomplete — fires after 2+ chars, 300ms delay
@@ -1119,8 +1129,9 @@ const InputSection = ({ onCalculate, forceVisible = false }) => {
                                     Next <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
                                 </button>
                             ) : (
-                                <button type="submit"
-                                    className="btn-glow flex items-center gap-2 px-6 py-2.5 text-sm cursor-pointer group">
+                                <button type="submit" disabled={!submitReady}
+                                    className={`btn-glow flex items-center gap-2 px-6 py-2.5 text-sm cursor-pointer group transition-opacity duration-300
+                                        ${!submitReady ? 'opacity-40 pointer-events-none' : ''}`}>
                                     Get Results <ArrowRight className="w-4 h-4" />
                                 </button>
                             )}
