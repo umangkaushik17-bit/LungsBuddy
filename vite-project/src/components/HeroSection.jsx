@@ -279,7 +279,7 @@ const DustParticles = () => {
 
 /* ===== Lung Model with Damage + In-Place Rotation ===== */
 const LungModelWithBreathing = () => {
-    const gltf = useGLTF('/src/assets/3d-vh-f-lung.glb');
+    const gltf = useGLTF('/models/3d-vh-f-lung.glb');
     const pivotRef = useRef();     // Outer pivot — handles rotation
     const innerRef = useRef();     // Inner group — offset position so model is centered at pivot origin
     const materialRef = useRef();
@@ -546,6 +546,6 @@ const HeroSection = () => {
     );
 };
 
-useGLTF.preload('/src/assets/3d-vh-f-lung.glb');
+useGLTF.preload('/models/3d-vh-f-lung.glb');
 
 export default HeroSection;
