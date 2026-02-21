@@ -1,112 +1,139 @@
-# 🫁 LungBuddy — AI-Powered Lung Health Risk Assessment
+# 🫁 LungBuddy — AI-Powered Lung Health Monitor
 
-<p align="center">
-  <strong>A comprehensive, research-backed lung health risk assessment tool that helps users understand their respiratory health through an interactive, visually stunning web experience.</strong>
-</p>
+[![Live Demo](https://img.shields.io/badge/Live-Demo-teal?style=for-the-badge)](https://lungs-buddy.vercel.app)
+[![React](https://img.shields.io/badge/React-18-61DAFB?style=flat-square&logo=react)](https://reactjs.org/)
+[![Vite](https://img.shields.io/badge/Vite-7-646CFF?style=flat-square&logo=vite)](https://vite.dev/)
+[![Firebase](https://img.shields.io/badge/Firebase-Auth%20%2B%20Firestore-FFCA28?style=flat-square&logo=firebase)](https://firebase.google.com/)
+[![Groq](https://img.shields.io/badge/Groq-LLaMA%203.3-orange?style=flat-square)](https://groq.com/)
 
-<p align="center">
-  <img src="https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=white" alt="React 19" />
-  <img src="https://img.shields.io/badge/Vite-7-646CFF?style=for-the-badge&logo=vite&logoColor=white" alt="Vite 7" />
-  <img src="https://img.shields.io/badge/Three.js-3D-000000?style=for-the-badge&logo=three.js&logoColor=white" alt="Three.js" />
-  <img src="https://img.shields.io/badge/TailwindCSS-4-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white" alt="Tailwind CSS" />
-</p>
+**LungBuddy** is a comprehensive lung health assessment platform that calculates a personalized risk score (0–100) based on environmental exposure, lifestyle habits, and medical history — then delivers AI-powered recommendations to improve your respiratory health.
 
 ---
 
-## 🌟 Features
+## ✨ Features
 
-- **🧪 Nonlinear Epidemiological Risk Engine** — Proprietary formula based on published research (GOLD 2024, WHO, SPIROMICS, UK Biobank, NHANES), computing risk across 5 weighted domains.
-- **🫁 Interactive 3D Lung Visualization** — Stunning Three.js-powered 3D lung model with particle effects on the hero section.
-- **📊 Detailed Risk Breakdown** — Visual breakdown across Biological, Behavioral, Environmental, Sleep, and Disease domains.
-- **📋 Multi-Step Input Form** — Intuitive, paginated input form with keyboard navigation and accessibility support.
-- **📄 PDF Report Generation** — Export a detailed, personalized risk assessment report as a PDF.
-- **🎨 Premium Dark UI** — Modern glassmorphism design with smooth animations powered by Framer Motion.
-- **📱 Fully Responsive** — Optimized experience across desktop, tablet, and mobile devices.
+### 🎯 5-Step Health Assessment
+- **Profile** — Age, sex, BMI, medical history, family history
+- **Exposure** — Real-time AQI via OpenWeather API, outdoor duration, mask usage, indoor air quality
+- **Lifestyle** — Smoking, vaping, exercise, sleep patterns
+- **Breath Hold Challenge** — Interactive timer or manual entry for lung capacity estimation
+- **Symptoms** — Shortness of breath, coughing, wheezing, chest tightness, recent infections
+
+### 📊 Intelligent Risk Engine
+- **5 weighted domains**: Environmental (35pts), Behavioral (20pts), Biological (15pts), Sleep & Recovery (15pts), Disease & Symptoms (15pts)
+- Non-linear, medically-informed scoring formula with cross-domain interactions
+- Evidence-based thresholds aligned with WHO/ALA guidelines
+
+### 🤖 AI-Powered Recommendations (Groq + LLaMA 3.3 70B)
+- Dynamic recommendation count based on score severity
+- Personalized advice targeting the user's worst risk domains
+- Categories: Status, Urgent, Protection, Lifestyle, Medical, Environment
+
+### 🏆 Competitive Leaderboard
+- Create or join rooms with friends
+- Track improvement percentage over time
+- 🔥 **Snapchat-style streak system** — consecutive daily submissions
+- **AI Coach** — per-member insights and competitive motivation
+- 24-hour submission cooldown
+
+### 🫁 3D Lung Visualization
+- Interactive Three.js lung model with particle effects
+- In-place rotation with fade-in animation
+- Responsive dust particle system
+
+### 📄 Downloadable PDF Report
+- Full assessment breakdown with charts
+- Generated via jsPDF
 
 ---
 
 ## 🛠️ Tech Stack
 
-| Technology | Purpose |
+| Layer | Technology |
 |---|---|
-| **React 19** | UI framework |
-| **Vite 7** | Build tool & dev server |
-| **Three.js** + React Three Fiber | 3D lung visualization |
-| **Framer Motion** | Animations & transitions |
-| **Recharts** | Data visualization charts |
-| **Tailwind CSS 4** | Utility-first styling |
-| **Lucide React** | Icon library |
-| **jsPDF** | PDF report generation |
+| **Frontend** | React 18 + Vite 7 |
+| **Styling** | Tailwind CSS + Custom CSS |
+| **Animations** | Framer Motion |
+| **3D** | Three.js + React Three Fiber |
+| **Charts** | Recharts |
+| **Icons** | Lucide React |
+| **Auth & DB** | Firebase (Auth + Cloud Firestore) |
+| **AI/LLM** | Groq API (LLaMA 3.3 70B Versatile) |
+| **Weather** | OpenWeather API (Geocoding + AQI) |
+| **PDF** | jsPDF |
+| **Hosting** | Vercel |
 
 ---
 
-## 🛡️ Security & API Keys
+## 🏗️ Architecture
 
-To keep the application secure and avoid leaking sensitive information like API keys (e.g., OpenWeather AQI fetch), follow these best practices:
-
-1. **Use Environment Variables**: Store your API keys in a `.env` file in the `vite-project/` directory.
-   ```text
-   VITE_OPENWEATHER_API_KEY=your_api_key_here
-   ```
-2. **Access in Code**: Access the key using `import.meta.env.VITE_OPENWEATHER_API_KEY`.
-3. **Never Commit Secrets**: The `.gitignore` file is configured to ignore `.env` files. Ensure you never manually add them to Git.
-
----
-
-## 🧮 Risk Calculation Model
-
-LungBuddy uses a **Weighted Domain Model** (100 points total) with 5 interdependent modules:
-
-| Domain | Max Points | Key Factors |
-|---|---|---|
-| 🧬 **Biological** | 15 | Age, BMI, genetics |
-| 🚬 **Behavioral** | 25 | Smoking, vaping, secondhand smoke |
-| 🌍 **Environmental** | 35 | AQI, outdoor exposure, indoor air, occupational hazards |
-| 😴 **Sleep** | 10 | Sleep duration, circadian disruption |
-| 🏥 **Disease & Symptoms** | 15 | Pre-existing conditions, respiratory symptoms |
-
-### Risk Categories
-
-| Score | Category |
-|---|---|
-| 90–100 | 🟢 Optimal |
-| 75–89 | 🟢 Good |
-| 50–74 | 🟡 Moderate |
-| 25–49 | 🟠 High Risk |
-| 0–24 | 🔴 Critical |
+```
+┌─────────────────────────────────────────────────┐
+│                   FRONTEND                       │
+│              React + Vite (SPA)                  │
+│                                                  │
+│  ┌───────────┐  ┌──────────────┐  ┌───────────┐ │
+│  │ HeroSection│  │ InputSection │  │ Results   │ │
+│  │ (3D Lung)  │  │ (5-step form)│  │ Section   │ │
+│  └───────────┘  └──────┬───────┘  └─────┬─────┘ │
+│                        │                │        │
+│  ┌─────────────────────┴────────────────┘        │
+│  │         Risk Engine (App.jsx)                 │
+│  │   5 domains × weighted scoring → 0-100        │
+│  └───────────────────────────────────────┘        │
+│                                                  │
+│  ┌──────────────────────────────────────┐        │
+│  │  Leaderboard (Auth + Rooms + Streaks) │       │
+│  └──────────────┬───────────────────────┘        │
+└─────────────────┼───────────────────────────────┘
+                  │
+    ┌─────────────┼─────────────────┐
+    ▼             ▼                 ▼
+┌────────┐  ┌──────────┐    ┌────────────┐
+│Firebase│  │ Groq API │    │ OpenWeather│
+│Auth +  │  │LLaMA 3.3 │    │  API       │
+│Firestore│ │  70B     │    │ AQI + Geo  │
+└────────┘  └──────────┘    └────────────┘
+```
 
 ---
 
 ## 🚀 Getting Started
 
 ### Prerequisites
-
-- **Node.js** (v18 or higher)
-- **npm** (v9 or higher)
+- Node.js 18+
+- Firebase project (Auth + Firestore enabled)
+- Groq API key ([console.groq.com](https://console.groq.com))
+- OpenWeather API key ([openweathermap.org](https://openweathermap.org/api))
 
 ### Installation
 
 ```bash
-# Clone the repository
 git clone https://github.com/umangkaushik17-bit/LungsBuddy.git
-
-# Navigate to the project
 cd LungsBuddy/vite-project
-
-# Install dependencies
 npm install
-
-# Start the development server
-npm run dev
 ```
 
-The app will be available at `http://localhost:5173`
+### Environment Setup
 
-### Build for Production
+Create a `.env` file in `vite-project/`:
+
+```env
+VITE_FIREBASE_API_KEY=your_firebase_api_key
+VITE_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
+VITE_FIREBASE_PROJECT_ID=your_project_id
+VITE_FIREBASE_STORAGE_BUCKET=your_project.firebasestorage.app
+VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+VITE_FIREBASE_APP_ID=your_app_id
+VITE_FIREBASE_MEASUREMENT_ID=your_measurement_id
+VITE_OPENWEATHER_API_KEY=your_openweather_key
+VITE_GROQ_API_KEY=your_groq_key
+```
+
+### Run
 
 ```bash
-npm run build
-npm run preview
+npm run dev
 ```
 
 ---
@@ -114,53 +141,45 @@ npm run preview
 ## 📁 Project Structure
 
 ```
-lung_buddy/
-├── vite-project/
-│   ├── src/
-│   │   ├── App.jsx                  # Main app + risk engine
-│   │   ├── index.css                # Global styles
-│   │   ├── main.jsx                 # App entry point
-│   │   ├── components/
-│   │   │   ├── HeroSection.jsx      # 3D lung model
-│   │   │   ├── InputSection.jsx     # Risk assessment form
-│   │   │   └── ResultsSection.jsx   # Results & breakdown
-│   │   └── assets/                  # Static assets
-│   ├── package.json
-│   └── vite.config.js
-├── SOURCES.txt                      # Research sources
-└── README.md
+vite-project/
+├── public/
+│   └── models/                 # 3D lung model (.glb)
+├── src/
+│   ├── components/
+│   │   ├── HeroSection.jsx     # 3D lung + landing
+│   │   ├── InputSection.jsx    # 5-step assessment form
+│   │   ├── ResultsSection.jsx  # Score gauge + AI recs
+│   │   ├── DamageSection.jsx   # Educational content
+│   │   ├── Footer.jsx          # Site footer
+│   │   └── leaderboard/
+│   │       ├── AuthProvider.jsx    # Firebase auth context
+│   │       ├── LeaderboardPage.jsx # Login/register
+│   │       ├── RoomLobby.jsx       # Create/join rooms
+│   │       ├── RoomDashboard.jsx   # Rankings + streaks + AI coach
+│   │       └── SubmitScoreModal.jsx# Score submission
+│   ├── gemini.js               # Groq LLM service
+│   ├── firebase.js             # Firebase config
+│   ├── App.jsx                 # Risk engine + routing
+│   └── index.css               # Global styles
+├── .env                        # API keys (gitignored)
+├── vercel.json                 # SPA routing config
+└── package.json
 ```
 
 ---
 
-## 📚 Research & Sources
+## 🔒 Security
 
-The risk calculation formula is grounded in peer-reviewed medical research including:
-
-- **GOLD 2024** — Global Initiative for Chronic Obstructive Lung Disease
-- **WHO Air Quality Guidelines** — Ambient & household air pollution data
-- **SPIROMICS** — Subpopulations and Intermediate Outcome Measures in COPD Study
-- **UK Biobank** — Large-scale biomedical database
-- **NHANES** — National Health and Nutrition Examination Survey
-- **CDC EVALI Data** — E-cigarette and vaping associated lung injury
-
-See [`SOURCES.txt`](SOURCES.txt) for the complete list of references.
+- All API keys stored in `.env` (gitignored)
+- Firebase Security Rules protect database access
+- For production, consider proxying API calls through Firebase Cloud Functions
 
 ---
 
-## 👨‍💻 Author
+## 📝 License
 
-**Umang Kaushik**
-- GitHub: [@umangkaushik17-bit](https://github.com/umangkaushik17-bit)
-
----
-
-## 📄 License
-
-This project is for educational and research purposes.
+This project is for educational purposes.
 
 ---
 
-<p align="center">
-  Made with ❤️ for better respiratory health awareness
-</p>
+**Made with ❤️ for healthier lungs**
